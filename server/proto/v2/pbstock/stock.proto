@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+package pb.stock;
+
+option go_package = "server/proto/v2/pbstock";
+
+import "google/api/annotations.proto";
+service Api {
+  rpc SetAgent (SetRequestAgent) returns (ResponseAgent) {
+    option (google.api.http) = {
+      post: "/v2/stock/set-agent",
+      body: "*"
+    };
+  }
+  rpc GetAgent (GetRequestAgent) returns (ResponseAgent) {
+    option (google.api.http) = {
+      post: "/v2/stock/get-agent",
+      body: "*"
+    };
+  }
+  rpc GetBrokers (GetRequestBrokers) returns (ResponseBroker) {
+    option (google.api.http) = {
+      post: "/v2/stock/get-brokers",
+      body: "*"
+    };
+  }
+  rpc GetRequests (GetRequestRequests) returns (ResponseAgent) {
+    option (google.api.http) = {
+      post: "/v2/stock/get-requests",
+      body: "*"
+    };
+  }
+  rpc DeleteAgent (GetRequestDeleteAgent) returns (ResponseAgent) {
+    option (google.api.http) = {
+      post: "/v2/stock/delete-agent",
+      body: "*"
+    };
+  }
+  rpc SetSetting (GetRequestSetting) returns (ResponseSetting) {
+    option (google.api.http) = {
+      post: "/v2/stock/request/set-setting",
+      body: "*"
+    };
+  }
+  rpc GetAgents (GetRequestAgents) returns (ResponseAgent) {
+    option (google.api.http) = {
+      post: "/v2/stock/get-agents",
+      body: "*"
+    };
+  }
+  rpc SetBlocked (SetRequestAgentBlocked) returns (ResponseBlocked) {
+    option (google.api.http) = {
+      post: "/v2/stock/agent/set-blocked",
+      body: "*"
+    };
+  }
+  rpc SetTransfer (SetRequestTransfer) returns (ResponseTransfer) {
+    option (google.api.http) = {
+      post: "/v2/stock/set-transfer",
+      body: "*"
+    };
+  }
+  rpc GetTransfers (GetRequestTransfers) returns (ResponseTransfer) {
+    option (google.api.http) = {
+      post: "/v2/stock/get-transfers",
+      body: "*"
+    };
+  }
+  rpc CancelTransfer (CancelRequestTransfer) returns (ResponseTransfer) {
+    option (google.api.http) = {
+      post: "/v2/stock/cancel-transfer",
+      body: "*"
+    };
+  }
+  rpc SetAction (SetRequestAction) returns (ResponseAction) {
+    option (google.api.http) = {
+      post: "/v2/stock/broker/set-action",
+      body: "*"
+    };
+  }
+}
+
+message SetRequestAction {
+  string symbol = 1;
+  double quantity = 2;
+  bool unshift = 3;
+}
+message ResponseAction {
+  bool success = 1;
+}
+message Transfer {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 broker_id = 3;
+  string symbol = 4;
+  string name = 5;
+  double value = 6;
+  string status = 7;
+  string create_at = 8;
+}
+message SetRequestTransfer {
+  string symbol = 1;
+  double quantity = 2;
+}
+message GetRequestTransfers {
+  bool unshift = 1;
+  string symbol = 2;
+  int64 limit = 3;
+  int64 page = 4;
+}
+message CancelRequestTransfer {
+  int64 id = 1;
+  bool unshift = 2;
+}
+message ResponseTransfer {
+  repeated Transfer fields = 1;
+  int32 count = 2;
+  bool success = 3;
+}
+message SetRequestAgentBlocked {
+  int64 id = 1;
+}
+message ResponseBlocked {
+  bool success = 1;
+}
+message GetRequestSetting {
+  int64 user_id = 1;
+  string status = 2;
+}
+message ResponseSetting {
+  bool success = 1;
+}
+message Agent {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 broker_id = 3;
+  string name = 4;
+  string email = 5;
+  string applicant = 6;
+  string type = 7;
+  string status = 8;
+  string create_at = 9;
+  bool success = 10;
+}
+message SetRequestAgent {
+  string name = 1;
+  int64 broker_id = 2;
+  string type = 3;
+}
+message GetRequestBrokers {
+  string search = 1;
+  int64 limit = 2;
+  int64 page = 3;
+}
+message ResponseBroker {
+  repeated Agent fields = 1;
+  int32 count = 2;
+}
+message GetRequestAgent {}
+message GetRequestAgents {
+  int64 limit = 1;
+  int64 page = 2;
+}
+message GetRequestDeleteAgent {
+  int64 id = 1;
+}
+message ResponseAgent {
+  repeated Agent fields = 1;
+  int32 count = 2;
+}
+message GetRequestRequests {
+  int64 limit = 1;
+  int64 page = 2;
+}
+message ResponseRequest {
+  repeated Agent fields = 1;
+  int32 count = 2;
+}
